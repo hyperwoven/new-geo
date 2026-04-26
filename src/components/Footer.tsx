@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { LogoMark } from './Nav'
 
 /** Site footer with brand, services, company, and connect columns. */
@@ -51,6 +52,7 @@ export function Footer() {
       <div className="footer-bottom">
         <span className="footer-copy">© 2026 Hyperwoven Ltd. All rights reserved.</span>
         <span className="footer-copy">Registered in England &amp; Wales</span>
+        <Link to="/privacy" className="footer-copy footer-privacy-link">Privacy Policy</Link>
       </div>
     </footer>
   )
