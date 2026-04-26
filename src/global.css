@@ -1341,6 +1341,14 @@ body.nav-open {
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .nav-mobile,
+    nav.menu-open .nav-mobile {
+      transition: opacity 0.1s ease, visibility 0s linear 0.1s;
+      transform: none;
+    }
+  }
+
   .nav-mobile ul {
     list-style: none;
     margin: 0;
