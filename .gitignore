@@ -1,1 +1,7 @@
-node_modules/\n.env\n.env.local\n.DS_Store\ndist/\n*.log
+node_modules/
+.env
+.env.local
+.DS_Store
+dist/
+*.log
+bun.lock
