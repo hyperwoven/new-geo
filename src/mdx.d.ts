@@ -1,7 +1,6 @@
 /**
- * Type declarations for MDX files with remark-mdx-frontmatter.
- * Each .mdx file exports its frontmatter keys as named exports
- * and the rendered component as the default export.
+ * Type declarations for MDX files with remark-mdx-frontmatter v4+.
+ * All frontmatter fields are exported as a single named `frontmatter` object.
  */
 declare module '*.mdx' {
   import type { ComponentType } from 'react'
@@ -10,10 +9,12 @@ declare module '*.mdx' {
   const Component: ComponentType
   export default Component
 
-  /** Frontmatter fields — must match the YAML in each article */
-  export const title: string
-  export const date: string
-  export const excerpt: string
-  export const tag: string
-  export const featured: boolean | undefined
+  /** All frontmatter fields — must match the YAML in each article */
+  export const frontmatter: {
+    title: string
+    date: string
+    excerpt: string
+    tag: string
+    featured?: boolean
+  }
 }

@@ -2,39 +2,12 @@ import type { ComponentType } from 'react'
 
 /**
  * Import each MDX article's default export (the rendered component) and its
- * frontmatter fields (exported as named exports by remark-mdx-frontmatter).
+ * frontmatter object (exported as `frontmatter` by remark-mdx-frontmatter v4).
  */
-import GeoContent, {
-  title as geoTitle,
-  date as geoDate,
-  excerpt as geoExcerpt,
-  tag as geoTag,
-  featured as geoFeatured,
-} from './geo-seo-ai-transition.mdx'
-
-import WcagContent, {
-  title as wcagTitle,
-  date as wcagDate,
-  excerpt as wcagExcerpt,
-  tag as wcagTag,
-  featured as wcagFeatured,
-} from './wcag-22-changes.mdx'
-
-import A11yContent, {
-  title as a11yTitle,
-  date as a11yDate,
-  excerpt as a11yExcerpt,
-  tag as a11yTag,
-  featured as a11yFeatured,
-} from './accessibility-competitive-advantage.mdx'
-
-import SchemaContent, {
-  title as schemaTitle,
-  date as schemaDate,
-  excerpt as schemaExcerpt,
-  tag as schemaTag,
-  featured as schemaFeatured,
-} from './structured-data-2026.mdx'
+import GeoContent, { frontmatter as geoFrontmatter } from './geo-seo-ai-transition.mdx'
+import WcagContent, { frontmatter as wcagFrontmatter } from './wcag-22-changes.mdx'
+import A11yContent, { frontmatter as a11yFrontmatter } from './accessibility-competitive-advantage.mdx'
+import SchemaContent, { frontmatter as schemaFrontmatter } from './structured-data-2026.mdx'
 
 export interface Article {
   /** URL-safe identifier used as the href anchor. */
@@ -56,38 +29,38 @@ export interface Article {
 export const articles: Article[] = [
   {
     slug: 'geo-seo-ai-transition',
-    title: geoTitle,
-    date: geoDate,
-    excerpt: geoExcerpt,
-    tag: geoTag as Article['tag'],
-    featured: geoFeatured,
+    title: geoFrontmatter.title,
+    date: geoFrontmatter.date,
+    excerpt: geoFrontmatter.excerpt,
+    tag: geoFrontmatter.tag as Article['tag'],
+    featured: geoFrontmatter.featured,
     Content: GeoContent,
   },
   {
     slug: 'wcag-22-changes',
-    title: wcagTitle,
-    date: wcagDate,
-    excerpt: wcagExcerpt,
-    tag: wcagTag as Article['tag'],
-    featured: wcagFeatured,
+    title: wcagFrontmatter.title,
+    date: wcagFrontmatter.date,
+    excerpt: wcagFrontmatter.excerpt,
+    tag: wcagFrontmatter.tag as Article['tag'],
+    featured: wcagFrontmatter.featured,
     Content: WcagContent,
   },
   {
     slug: 'accessibility-competitive-advantage',
-    title: a11yTitle,
-    date: a11yDate,
-    excerpt: a11yExcerpt,
-    tag: a11yTag as Article['tag'],
-    featured: a11yFeatured,
+    title: a11yFrontmatter.title,
+    date: a11yFrontmatter.date,
+    excerpt: a11yFrontmatter.excerpt,
+    tag: a11yFrontmatter.tag as Article['tag'],
+    featured: a11yFrontmatter.featured,
     Content: A11yContent,
   },
   {
     slug: 'structured-data-2026',
-    title: schemaTitle,
-    date: schemaDate,
-    excerpt: schemaExcerpt,
-    tag: schemaTag as Article['tag'],
-    featured: schemaFeatured,
+    title: schemaFrontmatter.title,
+    date: schemaFrontmatter.date,
+    excerpt: schemaFrontmatter.excerpt,
+    tag: schemaFrontmatter.tag as Article['tag'],
+    featured: schemaFrontmatter.featured,
     Content: SchemaContent,
   },
 ]
