@@ -1,4 +1,5 @@
 import { type FormEvent, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 type ServiceKey = 'accessibility' | 'geo' | 'both'
 
@@ -18,7 +19,8 @@ const SERVICE_OPTIONS: { key: ServiceKey; label: string }[] = [
  */
 function ContactForm() {
   const [fields, setFields] = useState({ name: '', email: '', company: '', budget: '', message: '' })
-  const [errors, setErrors] = useState({ name: false, email: false, message: false })
+  const [consent, setConsent] = useState({ contact: false, marketing: false })
+  const [errors, setErrors] = useState({ name: false, email: false, message: false, contact: false })
   const [selected, setSelected] = useState<Set<ServiceKey>>(new Set(['accessibility', 'geo']))
   const [honeypot, setHoneypot] = useState('')
   const [sending, setSending] = useState(false)
@@ -38,6 +40,7 @@ function ContactForm() {
       name: !fields.name.trim(),
       email: !emailRx.test(fields.email.trim()),
       message: !fields.message.trim(),
+      contact: !consent.contact,
     }
     setErrors(next)
     return !Object.values(next).some(Boolean)
@@ -175,7 +178,7 @@ function ContactForm() {
       </div>
 
       <div className="form-group">
-        <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
+        <fieldset className="form-fieldset">
           <legend className="form-label">I'm interested in</legend>
           <div className="form-services">
             {SERVICE_OPTIONS.map(({ key, label }) => (
@@ -223,6 +226,59 @@ function ContactForm() {
           Please add a short message.
         </span>
       </div>
+
+      {/* Consent checkboxes — required before submission */}
+      <fieldset className="form-fieldset form-consent">
+        <legend className="visually-hidden">Data consent</legend>
+
+        <div className="form-consent-item">
+          <div className="form-consent-row">
+            <input
+              type="checkbox"
+              id="cf-contact-consent"
+              name="contactConsent"
+              required
+              aria-required="true"
+              aria-invalid={errors.contact}
+              aria-describedby="err-contact-consent"
+              checked={consent.contact}
+              onChange={(e) => {
+                setConsent((c) => ({ ...c, contact: e.target.checked }))
+                if (errors.contact) setErrors((er) => ({ ...er, contact: false }))
+              }}
+            />
+            <label htmlFor="cf-contact-consent">
+              I consent to Hyperwoven storing and processing my personal data to respond
+              to this enquiry. <Link to="/privacy">Read our Privacy Policy</Link>.{' '}
+              <span className="required-marker" aria-hidden="true">*</span>
+              <span className="visually-hidden">(required)</span>
+            </label>
+          </div>
+          <span
+            className={`form-error-msg${errors.contact ? ' visible' : ''}`}
+            id="err-contact-consent"
+            role="alert"
+          >
+            You must consent to data storage to submit this form.
+          </span>
+        </div>
+
+        <div className="form-consent-item">
+          <div className="form-consent-row">
+            <input
+              type="checkbox"
+              id="cf-marketing-consent"
+              name="marketingConsent"
+              checked={consent.marketing}
+              onChange={(e) => setConsent((c) => ({ ...c, marketing: e.target.checked }))}
+            />
+            <label htmlFor="cf-marketing-consent">
+              I'd like to receive occasional updates, insights, and news from Hyperwoven.
+              You can unsubscribe at any time.
+            </label>
+          </div>
+        </div>
+      </fieldset>
 
       <button
         type="submit"

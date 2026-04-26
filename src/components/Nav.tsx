@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 /** The Hyperwoven wordmark SVG, extracted for reuse. */
 function LogoMark({ className }: { className?: string }) {
@@ -80,10 +81,10 @@ export function Nav() {
 
   return (
     <nav aria-label="Main navigation" className={[scrolled ? 'scrolled' : '', menuOpen ? 'menu-open' : ''].filter(Boolean).join(' ')}>
-      <a className="nav-logo" href="#">
+      <Link className="nav-logo" to="/" onClick={() => menuOpen && closeMenu()}>
         <LogoMark className="nav-logo-icon" />
         <span className="nav-logo-text">Hyperwoven</span>
-      </a>
+      </Link>
 
       <ul className="nav-links" role="list">
         {NAV_LINKS.map(({ href, label }) => (
