@@ -25,6 +25,7 @@ function ContactForm() {
   const [honeypot, setHoneypot] = useState('')
   const [sending, setSending] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [sendError, setSendError] = useState(false)
 
   function toggleService(key: ServiceKey) {
     setSelected((prev) => {
@@ -46,15 +47,47 @@ function ContactForm() {
     return !Object.values(next).some(Boolean)
   }
 
+  /**
+   * Submits the validated form data to the backend API.
+   * Silently discards submissions where the honeypot field is filled (bots).
+   *
+   * @param e - The form submit event
+   */
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    if (honeypot) return   // silently discard bot submissions
+    if (honeypot) return
     if (!validate()) return
 
     setSending(true)
-    // TODO: replace with real fetch() to your form endpoint
-    await new Promise((r) => setTimeout(r, 1800))
-    setSuccess(true)
+    setSendError(false)
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/enquiries`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: fields.name.trim(),
+          email: fields.email.trim(),
+          company: fields.company.trim() || undefined,
+          budget: fields.budget || undefined,
+          services: Array.from(selected).join(','),
+          message: fields.message.trim(),
+          contactConsent: consent.contact,
+          marketingConsent: consent.marketing,
+        }),
+      })
+
+      if (!response.ok) {
+        setSendError(true)
+        return
+      }
+
+      setSuccess(true)
+    } catch {
+      setSendError(true)
+    } finally {
+      setSending(false)
+    }
   }
 
   if (success) {
@@ -279,6 +312,13 @@ function ContactForm() {
           </div>
         </div>
       </fieldset>
+
+      {sendError && (
+        <p className="form-error-msg visible" role="alert">
+          Something went wrong — please try again or{' '}
+          <a href="mailto:principal.consultant@hyperwoven.co.uk">email us directly</a>.
+        </p>
+      )}
 
       <button
         type="submit"
